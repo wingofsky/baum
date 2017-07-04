@@ -2,6 +2,7 @@
 #开发/翻译
 
 # Baum
+Baum中文翻译，参考：[使用 Baum 嵌套集合模型来实现 Laravel 模型的无限极分类 | Laravel China 社区 - 高品质的 Laravel 和 PHP 开发者社区 - Powered by PHPHub](https://laravel-china.org/topics/2124/using-baum-nested-set-model-to-achieve-unlimited-classification-laravel-model)
 
 [![Build Status](https://travis-ci.org/etrepat/baum.png?branch=master)](https://travis-ci.org/etrepat/baum)
 
@@ -175,6 +176,10 @@ following columns:
 * `lft`: left index bound (int)
 * `rgt`: right index bound (int)
 * `depth`: depth or nesting level (int)
+* `parent_id`: 父节点的 id (int)
+* `lft`: 左边索引值 (int)
+* `rgt`: 右边索引值 (int)
+* `depth`: 层级深度 (int)
 
 Here is a sample migration file:
 
@@ -237,6 +242,7 @@ to use Baum with your model. Below are some examples.
 ### 创建根节点
 
 By default, all nodes are created as roots:
+
 创建节点时默认为根节点：
 
 ```php
@@ -245,6 +251,7 @@ $root = Category::create(['name' => 'Root category']);
 
 Alternatively, you may find yourself in the need of *converting* an existing node
 into a *root node*:
+
 也可以手动为某个节点赋予根节点：
 
 ```php
@@ -252,6 +259,7 @@ $node->makeRoot();
 ```
 
 You may also nullify it's `parent_id` column to accomplish the same behaviour:
+
  `parent_id` 赋值为null时，该节点为根节点：
 
 ```php
@@ -337,6 +345,24 @@ You can ask some questions to your Baum nodes:
 * `isRoot()`: Returns true if this is a root node.
 * `isLeaf()`: Returns true if this is a leaf node (end of a branch).
 * `isChild()`: Returns true if this is a child node.
+* `isDescendantOf($other)`: Returns true if node is a descendant of the other.
+* `isSelfOrDescendantOf($other)`: Returns true if node is self or a descendant.
+* `isAncestorOf($other)`: Returns true if node is an ancestor of the other.
+* `isSelfOrAncestorOf($other)`: Returns true if node is self or an ancestor.
+* `equals($node)`: current node instance equals the other.
+* `insideSubtree($node)`: Checks whether the given node is inside the subtree
+defined by the left and right indices.
+* `inSameScope($node)`: Returns true if the given node is in the same scope
+as the current one. That is, if *every* column in the `scoped` property has
+the same value in both nodes.
+
+### 获取节点信息
+
+可以通过以下函数获取节点的信息：
+
+* `isRoot()`: 如果是根节点返回TRUE
+* `isLeaf()`: Returns true if this is a leaf node (end of a branch).
+* `isChild()`: 如果是子节点返回TRUE
 * `isDescendantOf($other)`: Returns true if node is a descendant of the other.
 * `isSelfOrDescendantOf($other)`: Returns true if node is self or a descendant.
 * `isAncestorOf($other)`: Returns true if node is an ancestor of the other.
