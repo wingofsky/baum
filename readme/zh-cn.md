@@ -172,10 +172,6 @@ Remember that, obviously, the column names must match those in the database tabl
 You must ensure that the database table that supports your Baum models has the
 following columns:
 
-* `parent_id`: a reference to the parent (int)
-* `lft`: left index bound (int)
-* `rgt`: right index bound (int)
-* `depth`: depth or nesting level (int)
 * `parent_id`: 父节点的 id (int)
 * `lft`: 左边索引值 (int)
 * `rgt`: 右边索引值 (int)
@@ -238,10 +234,8 @@ to use Baum with your model. Below are some examples.
 * [Misc/Utility functions](#misc-utilities)
 
 <a name="creating-root-node"></a>
-### Creating a root node
 ### 创建根节点
 
-By default, all nodes are created as roots:
 
 创建节点时默认为根节点：
 
@@ -249,8 +243,6 @@ By default, all nodes are created as roots:
 $root = Category::create(['name' => 'Root category']);
 ```
 
-Alternatively, you may find yourself in the need of *converting* an existing node
-into a *root node*:
 
 也可以手动为某个节点赋予根节点：
 
@@ -258,7 +250,6 @@ into a *root node*:
 $node->makeRoot();
 ```
 
-You may also nullify it's `parent_id` column to accomplish the same behaviour:
 
  `parent_id` 赋值为null时，该节点为根节点：
 
@@ -269,7 +260,6 @@ $node->save();
 ```
 
 <a name="inserting-nodes"></a>
-### Inserting nodes
 ### 插入节点
 
 ```php
@@ -282,7 +272,6 @@ $child2->makeChildOf($root);
 ```
 
 <a name="deleting-nodes"></a>
-### Deleting nodes
 ### 删除节点
 
 ```php
@@ -299,7 +288,6 @@ model events for the descendants will not be fired.
 The `getLevel()` method will return current nesting level, or depth, of a node.
 
 ```php
-$node->getLevel() // 0 when root
 $node->getLevel() // 返回值为0时，该节点为根节点
 ```
 
@@ -338,23 +326,6 @@ $demons->moveToLeftOf($dragons);
 ```
 
 <a name="node-questions"></a>
-### Asking questions to your nodes
-
-You can ask some questions to your Baum nodes:
-
-* `isRoot()`: Returns true if this is a root node.
-* `isLeaf()`: Returns true if this is a leaf node (end of a branch).
-* `isChild()`: Returns true if this is a child node.
-* `isDescendantOf($other)`: Returns true if node is a descendant of the other.
-* `isSelfOrDescendantOf($other)`: Returns true if node is self or a descendant.
-* `isAncestorOf($other)`: Returns true if node is an ancestor of the other.
-* `isSelfOrAncestorOf($other)`: Returns true if node is self or an ancestor.
-* `equals($node)`: current node instance equals the other.
-* `insideSubtree($node)`: Checks whether the given node is inside the subtree
-defined by the left and right indices.
-* `inSameScope($node)`: Returns true if the given node is in the same scope
-as the current one. That is, if *every* column in the `scoped` property has
-the same value in both nodes.
 
 ### 获取节点信息
 
